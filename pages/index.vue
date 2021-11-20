@@ -1,77 +1,72 @@
 <template>
-  <v-row justify="center" align="center">
-    <v-col cols="12" sm="8" md="6">
-      <v-card class="logo py-4 d-flex justify-center">
-        <NuxtLogo />
-        <VuetifyLogo />
-      </v-card>
-      <v-card>
-        <v-card-title class="headline">
-          Welcome to the Vuetify + Nuxt.js template
+  <v-row justify="center">
+    <v-col class="text-center">
+      <v-card flat>
+        <v-card-title class="wrap-text text-subtitle-1 justify-center">
+          <span> 鎌倉クエストとは、クイズを通して</span
+          ><span>鎌倉の様々な名所の</span><span>隠れた魅力を</span
+          ><span>知ることが出来るサービスです</span>
         </v-card-title>
-        <v-card-text>
-          <p>Vuetify is a progressive Material Design component framework for Vue.js. It was designed to empower developers to create amazing applications.</p>
-          <p>
-            For more information on Vuetify, check out the <a
-              href="https://vuetifyjs.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              documentation
-            </a>.
-          </p>
-          <p>
-            If you have questions, please join the official <a
-              href="https://chat.vuetifyjs.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="chat"
-            >
-              discord
-            </a>.
-          </p>
-          <p>
-            Find a bug? Report it on the github <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="contribute"
-            >
-              issue board
-            </a>.
-          </p>
-          <p>Thank you for developing with Vuetify and I look forward to bringing more exciting features in the future.</p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
-          <hr class="my-3">
-          <a
-            href="https://nuxtjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt Documentation
-          </a>
-          <br>
-          <a
-            href="https://github.com/nuxt/nuxt.js"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt GitHub
-          </a>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-            color="primary"
-            nuxt
-            to="/inspire"
-          >
-            Continue
+
+        <v-row class="d-flex justify-center">
+          <v-card max-width="300" class="pa-2 ma-4">
+            <v-img v-bind:src="hachiko_src"></v-img>
+          </v-card>
+        </v-row>
+
+        <v-card-actions class="justify-center">
+          <v-btn color="primary" nuxt to="/top">
+            鎌倉クエストを使ってみる！
           </v-btn>
         </v-card-actions>
+
+        <v-card-subtitle class="text-subtitle-1 justify-center">
+          つかいかた
+        </v-card-subtitle>
+
+        <v-card-subtitle class="text-subtitle-1 justify-center">
+          ① 現地に行く
+        </v-card-subtitle>
+
+        <v-row class="d-flex justify-center">
+          <v-card max-width="300" class="pa-2 ma-4" flat>
+            <v-img v-bind:src="kamakuramap_src"></v-img>
+          </v-card>
+        </v-row>
+
+        <v-card-subtitle class="text-subtitle-1 justify-center">
+          ② 位置情報を許可する
+        </v-card-subtitle>
+
+        <v-row class="d-flex justify-center">
+          <v-card max-width="300" class="pa-2 ma-4" flat>
+            <v-img v-bind:src="GeolocationAccess_src"></v-img>
+          </v-card>
+        </v-row>
+
+        <v-card-subtitle class="text-subtitle-1 justify-center">
+          ③ 三択クイズに回答する
+        </v-card-subtitle>
+
+        <v-row class="d-flex justify-center">
+          <v-card max-width="300" class="pa-2 ma-4" flat>
+            <v-img v-bind:src="correct_src"></v-img>
+          </v-card>
+        </v-row>
       </v-card>
     </v-col>
   </v-row>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      hachiko_src: require("@/assets/image/hachiko.png"),
+      kamakuramap_src: require("@/assets/image/kamakuramap.png"),
+      GeolocationAccess_src: require("@/assets/image/GeolocationAccess.png"),
+      correct_src: require("@/assets/image/correct.png"),
+    };
+  },
+};
+</script>
