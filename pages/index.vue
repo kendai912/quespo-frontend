@@ -14,8 +14,16 @@
           </v-card>
         </v-row>
 
-        <v-card-actions class="justify-center">
-          <v-btn color="primary" nuxt to="/login"> ログイン </v-btn>
+        <v-card-actions class="justify-center px-4 py-8">
+          <v-btn
+            color="primary"
+            nuxt
+            to="/login"
+            max-width="300"
+            class="fill-width"
+          >
+            ログイン
+          </v-btn>
         </v-card-actions>
 
         <v-card-subtitle class="text-subtitle-1 justify-center">
@@ -57,7 +65,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations } from "vuex";
+import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 import myMixin from "../store/util";
 
 export default {

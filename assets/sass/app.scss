@@ -17,7 +17,7 @@
   position: relative;
 }
 
-.middle_separator {
+.middle-separator {
   position: absolute;
   padding: 0 16px;
   color: #ccc;
@@ -29,7 +29,7 @@
   left: 30%;
 }
 
-.middle_separator {
+.middle-separator {
   color: #777;
   font-size: 13px;
   top: -9px;
@@ -42,4 +42,11 @@
 
 .v-btn--active:hover::before {
   opacity: 0.18 !important;
+}
+
+.login-error {
+  position: absolute;
+  top: 8px;
+  left: auto;
+  color: red;
 }

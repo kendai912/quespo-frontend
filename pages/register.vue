@@ -7,6 +7,9 @@
   >
     <div class="px-4 py-8">
       <div style="max-width: 344px" class="mx-auto">
+        <div v-if="registerError" class="login-error">
+          既に登録済みのメールアドレスです
+        </div>
         <div>
           <v-btn
             class="fill-width mt-5 text-capitalize caption"
@@ -15,6 +18,8 @@
             depressed
             height="48px"
             tile
+            nuxt
+            to="/api/auth/facebook"
           >
             <img
               class="button-logo-img mr-4"
@@ -25,12 +30,13 @@
           </v-btn>
         </div>
         <div class="separator">
-          <div class="middle_separator">または</div>
+          <div class="middle-separator">または</div>
         </div>
         <div class="pt-0">
           <div>
             <v-text-field
-              v-model="email"
+              v-model="registerForm.email"
+              v-on:keydown.enter="register"
               :rules="[emailRules.required, emailRules.regex]"
               autofocus
               dense
@@ -40,7 +46,8 @@
             ></v-text-field>
 
             <v-text-field
-              v-model="password"
+              v-model="registerForm.password"
+              v-on:keydown.enter="register"
               :append-icon="passwordShow ? 'mdi-eye' : 'mdi-eye-off'"
               :rules="[passwordRules.required, passwordRules.regex]"
               :type="passwordShow ? 'text' : 'password'"
@@ -54,6 +61,7 @@
           </div>
           <div class="login-btn pb-8">
             <v-btn
+              v-on:click="register"
               class="fill-width caption"
               color="#FFCB00"
               depressed
@@ -75,13 +83,16 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations } from "vuex";
-import myMixin from "../store/util";
+import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 
 export default {
   data() {
     return {
-      email: null,
+      registerForm: {
+        email: null,
+        password: null,
+      },
+      registerError: false,
       emailRules: {
         required: (value) => !!value || "メールアドレスは必須です",
         regex: (value) =>
@@ -89,7 +100,6 @@ export default {
             value
           ) || "メールアドレスの形式が違います",
       },
-      password: null,
       passwordShow: false,
       passwordRules: {
         required: (value) => !!value || "パスワードは必須です",
@@ -99,6 +109,37 @@ export default {
       },
     };
   },
-  mixins: [myMixin],
+  computed: {
+    ...mapGetters({
+      apiStatus: (state) => state.auth.apiStatus,
+    }),
+  },
+  methods: {
+    ...mapActions({
+      isLoggedIn: "auth/isLoggedIn",
+    }),
+    async register() {
+      try {
+        // authストアのregisterアクションを呼び出す
+        await this.register(this.registerForm);
+
+        //ログイン出来たらTOPページへ
+        if (this.isLoggedIn) {
+          this.$router.push("/top");
+        } else {
+          //登録済みのアカウントであることを表示
+          this.registerError = true;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    clearError() {
+      this.registerError = false;
+    },
+  },
+  created() {
+    this.clearError();
+  },
 };
 </script>
