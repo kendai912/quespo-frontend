@@ -15,9 +15,7 @@
         </v-row>
 
         <v-card-actions class="justify-center">
-          <v-btn color="primary" nuxt to="/top">
-            鎌倉クエストを使ってみる！
-          </v-btn>
+          <v-btn color="primary" nuxt to="/login"> ログイン </v-btn>
         </v-card-actions>
 
         <v-card-subtitle class="text-subtitle-1 justify-center">
@@ -59,6 +57,9 @@
 </template>
 
 <script>
+import { mapState, mapGetters, mapMutations } from "vuex";
+import myMixin from "../store/util";
+
 export default {
   data() {
     return {
@@ -68,5 +69,6 @@ export default {
       correct_src: require("@/assets/image/correct.png"),
     };
   },
+  mixins: [myMixin],
 };
 </script>
