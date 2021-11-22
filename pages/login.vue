@@ -35,6 +35,17 @@
         <div class="pt-0">
           <div>
             <v-text-field
+              v-model="loginForm.name"
+              v-on:keydown.enter="login"
+              :rules="[nameRules.required, nameRules.regex]"
+              autofocus
+              dense
+              height="48px"
+              outlined
+              placeholder="ユーザー名"
+            ></v-text-field>
+
+            <v-text-field
               v-model="loginForm.email"
               v-on:keydown.enter="login"
               :rules="[emailRules.required, emailRules.regex]"
@@ -89,10 +100,15 @@ export default {
   data() {
     return {
       loginForm: {
+        name: null,
         email: null,
         password: null,
       },
       loginError: false,
+      nameRules: {
+        required: (value) => !!value || "ユーザー名は必須です",
+        regex: (value) => value?.length <= 10 || "10文字以内で入力してください",
+      },
       emailRules: {
         required: (value) => !!value || "メールアドレスは必須です",
         regex: (value) =>
