@@ -6,9 +6,15 @@
         <v-col>
           <v-toolbar-title v-text="title" class="text-center" />
         </v-col>
-        <v-col class="text-right">
-          <v-btn v-if="!isLogin" nuxt to="/login" outlined> ログイン </v-btn>
-          <v-btn v-else nuxt to="/logout" outlined> ログアウト </v-btn>
+        <v-col class="d-flex justify-end">
+          <AuthIcon v-if="!isLoggedIn" @click.native="login"
+            ><template v-slot:authIcon>login</template
+            ><template v-slot:authName>ログイン</template></AuthIcon
+          >
+          <AuthIcon v-else @click.native="logout"
+            ><template v-slot:authIcon>logout</template
+            ><template v-slot:authName>ログアウト</template></AuthIcon
+          >
         </v-col>
       </v-row>
     </v-app-bar>
@@ -39,9 +45,14 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isLogin: "auth/isLoggedIn",
+      isLoggedIn: "auth/isLoggedIn",
     }),
   },
-  watch: {},
+  methods: {
+    login() {
+      this.$router.push("/login");
+    },
+    logout() {},
+  },
 };
 </script>

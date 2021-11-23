@@ -66,7 +66,6 @@
 
 <script>
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
-import myMixin from "../store/util";
 
 export default {
   data() {
@@ -77,6 +76,5 @@ export default {
       correct_src: require("@/assets/image/correct.png"),
     };
   },
-  mixins: [myMixin],
 };
 </script>
