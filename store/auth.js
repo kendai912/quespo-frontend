@@ -21,6 +21,7 @@ const mutations = {
     state.isLoggedIn = true;
   },
   setIsLoggedOut(state) {
+    console.log("logout")
     state.isLoggedIn = false;
   },
 };
