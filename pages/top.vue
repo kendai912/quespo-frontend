@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="d-flex justify-center pa-0 ma-0">
     <QuizCategory />
   </div>
 </template>
@@ -13,11 +13,11 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setIsLoggedIn: "auth/setIsLoggedIn",
+      setIsLoggedIn: "auth/setIsLoggedIn", //あとで消す
     }),
   },
   created() {
-    this.setIsLoggedIn();
+    this.setIsLoggedIn(); //あとで消す
   },
 };
 </script>

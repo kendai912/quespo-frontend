@@ -74,3 +74,9 @@
   font-size: 12px;
   text-align: center;
 }
+
+.outlined {
+  color: white;
+  -webkit-text-stroke: 1px #000;
+  -webkit-text-fill-color: transparent;
+}
