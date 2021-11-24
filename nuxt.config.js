@@ -59,11 +59,7 @@ export default {
     customVariables: ["~/assets/sass/variables.scss"],
     treeShake: true,
     defaultAssets: {
-      font: true,
       icons: "md",
-    },
-    icons: {
-      iconfont: "md",
     },
     theme: {
       dark: false,
