@@ -4,7 +4,12 @@
       <v-row justify="center" align="center">
         <v-col> </v-col>
         <v-col>
-          <v-toolbar-title v-text="title" class="text-center" />
+          <v-toolbar-title
+            v-text="title"
+            @click="$router.push('/top')"
+            class="text-center"
+            style="cursor: pointer"
+          />
         </v-col>
         <v-col class="d-flex justify-end">
           <AuthIcon v-if="!isLoggedIn" @click.native="login"
