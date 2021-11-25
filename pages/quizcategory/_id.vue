@@ -32,9 +32,7 @@
 
         <v-card-actions class="d-flex justify-center">
           <v-container>
-            <v-row class="d-flex justify-center">
-              <v-btn outlined rounded small> ヒントを見る </v-btn>
-            </v-row>
+            <Hint :hintText="question.hint_text" />
             <v-row class="d-flex justify-center mt-12 mb-4 position-relative">
               <v-btn
                 @click="answer(0)"
@@ -168,7 +166,7 @@
             {{ question.commentary }}
           </div>
           <div v-else class="text-h7 text-center px-4 pt-0 pb-0 mb-4">
-            {{ hint }}
+            {{ question.hint_text }}
           </div>
 
           <v-card-actions
@@ -217,7 +215,6 @@ export default {
       quiz: 0,
       correct_src: require("@/assets/image/correct.png"),
       wrong_src: require("@/assets/image/wrong.png"),
-      hint: "ヒントだよ",
       answeredOption: null,
       result: null,
       questionCategory: {
@@ -234,6 +231,7 @@ export default {
             question_text: "鎌倉大仏はなぜ建てられたのか？",
             img_file_name_question:
               "https://cdn.vuetifyjs.com/images/cards/foster.jpg",
+            hint_text: "クイズ１のヒントの文言",
             commentary:
               "鎌倉大仏が建立された頃、付近には死後に出会う十王を奉る閻魔堂があり、浄土信仰に基づく情景を構成する寺院群の一つとして建てられた",
             status: null,
@@ -261,6 +259,7 @@ export default {
             question_text: "鶴岡八幡宮の質問文",
             img_file_name_question:
               "https://cdn.vuetifyjs.com/images/cards/halcyon.png",
+            hint_text: "クイズ２のヒントの文言",
             commentary: "鶴岡八幡宮の解説",
             status: 2,
             created_at: "2021/11/23",
@@ -287,6 +286,7 @@ export default {
             question_text: "問３の質問文",
             img_file_name_question:
               "https://cdn.vuetifyjs.com/images/cards/cooking.png",
+            hint_text: "クイズ３のヒントの文言",
             commentary: "問３の解説",
             status: 1,
             created_at: "2021/11/30",
