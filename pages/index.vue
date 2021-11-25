@@ -56,7 +56,7 @@
 
         <v-row class="d-flex justify-center">
           <v-card max-width="300" class="pa-2 ma-4" flat>
-            <v-img v-bind:src="correct_src"></v-img>
+            <v-img v-bind:src="correct_img_src"></v-img>
           </v-card>
         </v-row>
       </v-card>
@@ -73,7 +73,7 @@ export default {
       hachiko_src: require("@/assets/image/hachiko.png"),
       kamakuramap_src: require("@/assets/image/kamakuramap.png"),
       GeolocationAccess_src: require("@/assets/image/GeolocationAccess.png"),
-      correct_src: require("@/assets/image/correct.png"),
+      correct_img_src: require("@/assets/image/correct_img.png"),
     };
   },
 };
