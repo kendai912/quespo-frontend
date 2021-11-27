@@ -8,7 +8,7 @@ export default {
     titleTemplate: "%s - quespo-frontend",
     title: "quespo-frontend",
     htmlAttrs: {
-      lang: "en",
+      lang: "ja",
     },
     meta: [
       { charset: "utf-8" },

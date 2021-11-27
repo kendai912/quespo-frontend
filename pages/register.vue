@@ -127,7 +127,6 @@ export default {
   },
   computed: {
     ...mapGetters({
-      apiStatus: (state) => state.auth.apiStatus,
     }),
   },
   methods: {

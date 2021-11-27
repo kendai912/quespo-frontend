@@ -35,17 +35,6 @@
         <div class="pt-0">
           <div>
             <v-text-field
-              v-model="loginForm.name"
-              v-on:keydown.enter="login"
-              :rules="[nameRules.required, nameRules.regex]"
-              autofocus
-              dense
-              height="48px"
-              outlined
-              placeholder="ユーザー名"
-            ></v-text-field>
-
-            <v-text-field
               v-model="loginForm.email"
               v-on:keydown.enter="login"
               :rules="[emailRules.required, emailRules.regex]"
@@ -100,15 +89,10 @@ export default {
   data() {
     return {
       loginForm: {
-        name: null,
         email: null,
         password: null,
       },
       loginError: false,
-      nameRules: {
-        required: (value) => !!value || "ユーザー名は必須です",
-        regex: (value) => value?.length <= 10 || "10文字以内で入力してください",
-      },
       emailRules: {
         required: (value) => !!value || "メールアドレスは必須です",
         regex: (value) =>
@@ -127,20 +111,21 @@ export default {
   },
   computed: {
     ...mapGetters({
-      apiStatus: (state) => state.auth.apiStatus,
+      isLoggedIn: "auth/isLoggedIn",
     }),
   },
   methods: {
     ...mapActions({
-      isLoggedIn: "auth/isLoggedIn",
+      loginAuth: "auth/loginAuth",
     }),
     async login() {
       try {
         // authストアのloginアクションを呼び出す
-        await this.login(this.loginForm);
+        await this.loginAuth(this.loginForm);
 
         //ログイン出来たらTOPページへ
         if (this.isLoggedIn) {
+          console.log("ログイン成功");
           this.$router.push("/top");
         } else {
           //メールアドレスもしくはパスワードが違うことを表示

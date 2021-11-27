@@ -21,13 +21,12 @@ const mutations = {
     state.isLoggedIn = true;
   },
   setIsLoggedOut(state) {
-    console.log("logout")
     state.isLoggedIn = false;
   },
 };
 
 const actions = {
-  async register(context, data) {
+  async registerAuth(context, data) {
     const response = await axios
       .post("/api/register", data)
       .catch((err) => err.response || err);
@@ -40,12 +39,12 @@ const actions = {
       console.log(response.status);
     }
   },
-  async login(context, data) {
+  async loginAuth(context, data) {
     const response = await axios
       .post("/api/login", data)
       .catch((err) => err.response || err);
 
-    if (response.status == CREATED) {
+    if (response.status == OK) {
       context.commit("setIsLoggedIn");
     } else if (response.status === UNPROCESSABLE_ENTITY) {
       console.log("UNPROCESSABLE_ENTITY");
@@ -53,7 +52,7 @@ const actions = {
       console.log(response.status);
     }
   },
-  async logout(context) {
+  async logoutAuth(context) {
     const response = await axios
       .post("/api/logout")
       .catch((err) => err.response || err);
