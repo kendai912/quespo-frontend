@@ -45,6 +45,7 @@ const actions = {
       .catch((err) => err.response || err);
 
     if (response.status == OK) {
+      console.log(response);
       context.commit("setIsLoggedIn");
     } else if (response.status === UNPROCESSABLE_ENTITY) {
       console.log("UNPROCESSABLE_ENTITY");
