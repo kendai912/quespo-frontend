@@ -11,5 +11,13 @@ export default {
   data() {
     return {};
   },
+  methods: {
+    ...mapActions({
+      getQuestionCategories: "questioncategory/getQuestionCategories",
+    }),
+  },
+  created() {
+    this.getQuestionCategories();
+  },
 };
 </script>

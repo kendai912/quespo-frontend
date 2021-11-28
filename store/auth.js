@@ -17,6 +17,12 @@ const getters = {
 };
 
 const mutations = {
+  setApiToken(state, data) {
+    this.$cookies.set("api_token", data, {
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7,
+    });
+  },
   setIsLoggedIn(state) {
     state.isLoggedIn = true;
   },
@@ -45,8 +51,9 @@ const actions = {
       .catch((err) => err.response || err);
 
     if (response.status == OK) {
-      console.log(response);
+      context.commit("setApiToken", response.data.token);
       context.commit("setIsLoggedIn");
+      console.log("api_token = " + this.$cookies.get("api_token"));
     } else if (response.status === UNPROCESSABLE_ENTITY) {
       console.log("UNPROCESSABLE_ENTITY");
     } else {

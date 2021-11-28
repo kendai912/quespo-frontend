@@ -92,15 +92,9 @@ export default {
     }),
   },
   methods: {
-    ...mapActions({
-      getQuestionCategories: "questioncategory/getQuestionCategories",
-    }),
     openMap(address) {
       window.open(address, "_blank");
     },
-  },
-  created() {
-    this.getQuestionCategories();
   },
 };
 </script>

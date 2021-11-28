@@ -43,6 +43,7 @@ export default {
     // https://go.nuxtjs.dev/axios
     "@nuxtjs/axios",
     "@nuxtjs/proxy",
+    ["cookie-universal-nuxt", { parseJSON: false }],
   ],
   proxy: {
     "/api":
