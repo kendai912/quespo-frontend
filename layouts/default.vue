@@ -32,7 +32,7 @@
 
     <v-footer app absolute>
       <v-col class="text-center"
-        >created by <a href="http://twitter.com/Kendai">@KamakuraQuest</a>
+        >created by <a href="http://twitter.com/Quest_spot">@名所・旧跡クイズ</a>
       </v-col>
     </v-footer>
   </v-app>
