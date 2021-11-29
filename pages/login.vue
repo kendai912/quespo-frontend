@@ -10,7 +10,7 @@
         <div v-if="loginError" class="login-error">
           メールアドレスもしくはパスワードが違います
         </div>
-        <div>
+        <!-- <div>
           <v-btn
             class="fill-width mt-5 text-capitalize caption"
             color="#385184"
@@ -31,51 +31,53 @@
         </div>
         <div class="separator">
           <div class="middle-separator">または</div>
-        </div>
+        </div> -->
         <div class="pt-0">
-          <div>
-            <v-text-field
-              v-model="loginForm.email"
-              v-on:keydown.enter="login"
-              :rules="[emailRules.required, emailRules.regex]"
-              autofocus
-              dense
-              height="48px"
-              outlined
-              placeholder="メールアドレス"
-            ></v-text-field>
+          <v-form ref="form">
+            <div>
+              <v-text-field
+                v-model="loginForm.email"
+                v-on:keydown.enter="login"
+                :rules="[emailRules.required, emailRules.regex]"
+                autofocus
+                dense
+                height="48px"
+                outlined
+                placeholder="メールアドレス"
+              ></v-text-field>
 
-            <v-text-field
-              v-model="loginForm.password"
-              v-on:keydown.enter="login"
-              :append-icon="passwordShow ? 'mdi-eye' : 'mdi-eye-off'"
-              :rules="[passwordRules.required, passwordRules.regex]"
-              :type="passwordShow ? 'text' : 'password'"
-              dense
-              height="48px"
-              name="input-password"
-              outlined
-              placeholder="パスワード"
-              @click:append="passwordShow = !passwordShow"
-            ></v-text-field>
-          </div>
-          <div class="login-btn pb-8">
-            <v-btn
-              v-on:click="login"
-              class="fill-width caption"
-              color="#FFCB00"
-              depressed
-              height="48px"
-              tile
-            >
-              ログイン
-            </v-btn>
-          </div>
-          <v-divider></v-divider>
-          <div class="pt-8 pb-4">
-            <span>はじめての方はこちら：</span>
-            <nuxt-link to="/register">会員登録に移動</nuxt-link>
-          </div>
+              <v-text-field
+                v-model="loginForm.password"
+                v-on:keydown.enter="login"
+                :append-icon="passwordShow ? 'mdi-eye' : 'mdi-eye-off'"
+                :rules="[passwordRules.required, passwordRules.regex]"
+                :type="passwordShow ? 'text' : 'password'"
+                dense
+                height="48px"
+                name="input-password"
+                outlined
+                placeholder="パスワード"
+                @click:append="passwordShow = !passwordShow"
+              ></v-text-field>
+            </div>
+            <div class="login-btn pb-8">
+              <v-btn
+                v-on:click="login"
+                class="fill-width caption"
+                color="#FFCB00"
+                depressed
+                height="48px"
+                tile
+              >
+                ログイン
+              </v-btn>
+            </div>
+            <v-divider></v-divider>
+            <div class="pt-8 pb-4">
+              <span>はじめての方はこちら：</span>
+              <nuxt-link to="/register">会員登録に移動</nuxt-link>
+            </div>
+          </v-form>
         </div>
       </div>
     </div>
@@ -104,8 +106,8 @@ export default {
       passwordRules: {
         required: (value) => !!value || "パスワードは必須です",
         regex: (value) =>
-          /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)[a-zA-Z\d]{7,128}$/.test(value) ||
-          "半角英小文字大文字数字をそれぞれ1種類以上含む6文字以上128文字以下で入力してください",
+          /^(?=.*?[a-zA-Z])(?=.*?\d)[a-zA-Z\d]{7,128}$/.test(value) ||
+          "半角英字数字をそれぞれ1種類以上含む6文字以上128文字以下で入力してください",
       },
     };
   },
@@ -119,19 +121,21 @@ export default {
       loginAuth: "auth/loginAuth",
     }),
     async login() {
-      try {
-        // authストアのloginアクションを呼び出す
-        await this.loginAuth(this.loginForm);
+      if (this.$refs.form.validate()) {
+        try {
+          // authストアのloginアクションを呼び出す
+          await this.loginAuth(this.loginForm);
 
-        //ログイン出来たらTOPページへ
-        if (this.isLoggedIn) {
-          this.$router.push("/top");
-        } else {
-          //メールアドレスもしくはパスワードが違うことを表示
-          this.loginError = true;
+          //ログイン出来たらTOPページへ
+          if (this.isLoggedIn) {
+            this.$router.push("/top");
+          } else {
+            //メールアドレスもしくはパスワードが違うことを表示
+            this.loginError = true;
+          }
+        } catch (e) {
+          console.log(e);
         }
-      } catch (e) {
-        console.log(e);
       }
     },
     clearError() {
