@@ -3,7 +3,7 @@
     <v-container class="ma-0 pa-0">
       <v-row dense>
         <v-col
-          v-for="(questionCategory, i) in questionCategoryList"
+          v-for="(questionCategory, i) in questionCategories"
           :key="i"
           cols="12"
         >
@@ -27,10 +27,7 @@
                     rounded
                     small
                     nuxt
-                    :to="
-                      '/questioncategory/' +
-                      questionCategory.question_category_id
-                    "
+                    :to="'/questioncategory/' + questionCategory.id"
                   >
                     挑戦する
                   </v-btn>
@@ -39,7 +36,12 @@
                     outlined
                     rounded
                     small
-                    @click="openMap(questionCategory.address)"
+                    @click="
+                      openMap(
+                        questionCategory.question_area.latitude,
+                        questionCategory.question_area.longitude
+                      )
+                    "
                   >
                     <v-icon class="outlined">near_me</v-icon>
                     行き方
@@ -48,7 +50,7 @@
               </div>
 
               <v-avatar class="ma-2" size="120" tile>
-                <v-img :src="questionCategory.src"></v-img>
+                <v-img :src="question_category_src(i)"></v-img>
               </v-avatar>
             </div>
           </v-card>
@@ -63,37 +65,28 @@ import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 
 export default {
   data() {
-    return {
-      questionCategoryList: [
-        {
-          question_category_id: 1,
-          title: "鎌倉大仏",
-          body: "鎌倉大仏として名高い高尊寺の国宝銅像阿弥陀仏像に関するクイズ",
-          num_of_questions: 3,
-          address:
-            "https://www.google.com/maps/dir/?api=1&destination=鎌倉大仏",
-          src: "https://cdn.vuetifyjs.com/images/cards/foster.jpg",
-        },
-        {
-          question_category_id: 2,
-          title: "鶴岡八幡宮",
-          body: "鎌倉のシンボル的神社である鶴岡八幡宮に関するクイズ",
-          num_of_questions: 5,
-          address:
-            "https://www.google.com/maps/dir/?api=1&destination=鶴岡八幡宮",
-          src: "https://cdn.vuetifyjs.com/images/cards/halcyon.png",
-        },
-      ],
-    };
+    return {};
   },
   computed: {
     ...mapGetters({
       questionCategories: "questioncategory/questionCategories",
     }),
+    question_category_src: function () {
+      return function (i) {
+        let index = Number(i) + 1;
+        return require("@/assets/image/question_category_" + index + ".jpg");
+      };
+    },
   },
   methods: {
-    openMap(address) {
-      window.open(address, "_blank");
+    openMap(latitude, longitude) {
+      window.open(
+        "https://www.google.com/maps/dir/?api=1&destination=" +
+          latitude +
+          "," +
+          longitude,
+        "_blank"
+      );
     },
   },
 };
