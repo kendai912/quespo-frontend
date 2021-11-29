@@ -1,4 +1,3 @@
-import axios from "axios";
 import {
   OK,
   CREATED,
@@ -23,6 +22,9 @@ const mutations = {
       maxAge: 60 * 60 * 24 * 7,
     });
   },
+  removeApiToken(state) {
+    this.$cookies.remove("api_token");
+  },
   setIsLoggedIn(state) {
     state.isLoggedIn = true;
   },
@@ -33,7 +35,7 @@ const mutations = {
 
 const actions = {
   async registerAuth(context, data) {
-    const response = await axios
+    const response = await this.$axios
       .post("/api/register", data)
       .catch((err) => err.response || err);
 
@@ -46,14 +48,13 @@ const actions = {
     }
   },
   async loginAuth(context, data) {
-    const response = await axios
+    const response = await this.$axios
       .post("/api/login", data)
       .catch((err) => err.response || err);
 
     if (response.status == OK) {
       context.commit("setApiToken", response.data.token);
       context.commit("setIsLoggedIn");
-      console.log("api_token = " + this.$cookies.get("api_token"));
     } else if (response.status === UNPROCESSABLE_ENTITY) {
       console.log("UNPROCESSABLE_ENTITY");
     } else {
@@ -61,9 +62,11 @@ const actions = {
     }
   },
   async logoutAuth(context) {
-    const response = await axios
+    const response = await this.$axios
       .post("/api/logout")
       .catch((err) => err.response || err);
+    context.commit("removeApiToken");
+    context.commit("setIsLoggedOut");
   },
 };
 

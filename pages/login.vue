@@ -125,7 +125,6 @@ export default {
 
         //ログイン出来たらTOPページへ
         if (this.isLoggedIn) {
-          console.log("ログイン成功");
           this.$router.push("/top");
         } else {
           //メールアドレスもしくはパスワードが違うことを表示

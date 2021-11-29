@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations } from "vuex";
+import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 
 export default {
   data() {
@@ -54,10 +54,15 @@ export default {
     }),
   },
   methods: {
+    ...mapActions({
+      logoutAuth: "auth/logoutAuth",
+    }),
     login() {
       this.$router.push("/login");
     },
-    logout() {},
+    logout() {
+      this.logoutAuth();
+    },
   },
 };
 </script>

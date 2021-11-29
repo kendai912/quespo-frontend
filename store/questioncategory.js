@@ -1,4 +1,3 @@
-import axios from "axios";
 import {
   OK,
   CREATED,
@@ -24,12 +23,16 @@ const mutations = {
 
 const actions = {
   async getQuestionCategories(context) {
-    const response = await axios
-      .get("/api/questioncategories")
+    const response = await this.$axios
+      .get("/api/test")
       .catch((err) => err.response || err);
+    // const response = await this.$axios
+    //   .get("/api/questioncategories")
+    //   .catch((err) => err.response || err);
 
-    if (response.status == CREATED) {
-      console.log(response);
+    if (response.status == OK) {
+      console.log("API: questionCategories success!!");
+      // context.commit("setQuestionCategories", response.data.questionCategories);
     } else if (response.status === UNPROCESSABLE_ENTITY) {
       console.log("UNPROCESSABLE_ENTITY");
     } else {
