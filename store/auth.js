@@ -1,4 +1,3 @@
-import axios from "axios";
 import {
   OK,
   CREATED,
@@ -17,18 +16,26 @@ const getters = {
 };
 
 const mutations = {
+  setApiToken(state, data) {
+    this.$cookies.set("api_token", data, {
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7,
+    });
+  },
+  removeApiToken(state) {
+    this.$cookies.remove("api_token");
+  },
   setIsLoggedIn(state) {
     state.isLoggedIn = true;
   },
   setIsLoggedOut(state) {
-    console.log("logout")
     state.isLoggedIn = false;
   },
 };
 
 const actions = {
-  async register(context, data) {
-    const response = await axios
+  async registerAuth(context, data) {
+    const response = await this.$axios
       .post("/api/register", data)
       .catch((err) => err.response || err);
 
@@ -40,12 +47,13 @@ const actions = {
       console.log(response.status);
     }
   },
-  async login(context, data) {
-    const response = await axios
+  async loginAuth(context, data) {
+    const response = await this.$axios
       .post("/api/login", data)
       .catch((err) => err.response || err);
 
-    if (response.status == CREATED) {
+    if (response.status == OK) {
+      context.commit("setApiToken", response.data.token);
       context.commit("setIsLoggedIn");
     } else if (response.status === UNPROCESSABLE_ENTITY) {
       console.log("UNPROCESSABLE_ENTITY");
@@ -53,10 +61,12 @@ const actions = {
       console.log(response.status);
     }
   },
-  async logout(context) {
-    const response = await axios
+  async logoutAuth(context) {
+    const response = await this.$axios
       .post("/api/logout")
       .catch((err) => err.response || err);
+    context.commit("removeApiToken");
+    context.commit("setIsLoggedOut");
   },
 };
 

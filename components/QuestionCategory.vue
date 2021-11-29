@@ -28,7 +28,8 @@
                     small
                     nuxt
                     :to="
-                      '/quizcategory/' + questionCategory.question_category_id
+                      '/questioncategory/' +
+                      questionCategory.question_category_id
                     "
                   >
                     挑戦する
@@ -58,7 +59,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations } from "vuex";
+import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 
 export default {
   data() {
@@ -84,6 +85,11 @@ export default {
         },
       ],
     };
+  },
+  computed: {
+    ...mapGetters({
+      questionCategories: "questioncategory/questionCategories",
+    }),
   },
   methods: {
     openMap(address) {

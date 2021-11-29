@@ -8,7 +8,7 @@ export default {
     titleTemplate: "%s - quespo-frontend",
     title: "quespo-frontend",
     htmlAttrs: {
-      lang: "en",
+      lang: "ja",
     },
     meta: [
       { charset: "utf-8" },
@@ -27,7 +27,7 @@ export default {
   css: [{ src: "~/assets/sass/app.scss", lang: "scss" }],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: [{ src: "~/plugins/axios.js" }],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -43,6 +43,7 @@ export default {
     // https://go.nuxtjs.dev/axios
     "@nuxtjs/axios",
     "@nuxtjs/proxy",
+    ["cookie-universal-nuxt", { parseJSON: false }],
   ],
   proxy: {
     "/api":
@@ -53,6 +54,10 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
+
+  router: {
+    middleware: "authenticator",
+  },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {

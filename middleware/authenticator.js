@@ -6,6 +6,6 @@ export default async ({ store, route, redirect }) => {
 
   // LP以外でログインしていない場合はLPにリダイレクト
   if (!store.getters["auth/isLoggedIn"]) {
-    return redirect("/index");
+    // return redirect("/");
   }
 };

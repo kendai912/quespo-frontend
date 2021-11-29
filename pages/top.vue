@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex justify-center pa-0 ma-0">
-    <QuizCategory />
+    <QuestionCategory />
   </div>
 </template>
 
@@ -12,12 +12,12 @@ export default {
     return {};
   },
   methods: {
-    ...mapMutations({
-      setIsLoggedIn: "auth/setIsLoggedIn", //あとで消す
+    ...mapActions({
+      getQuestionCategories: "questioncategory/getQuestionCategories",
     }),
   },
   created() {
-    this.setIsLoggedIn(); //あとで消す
+    this.getQuestionCategories();
   },
 };
 </script>
