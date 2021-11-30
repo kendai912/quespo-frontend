@@ -13,11 +13,11 @@ export default {
   },
   methods: {
     ...mapActions({
-      getQuestionCategories: "questioncategory/getQuestionCategories",
+      indexQuestionCategories: "questioncategory/indexQuestionCategories",
     }),
   },
   created() {
-    this.getQuestionCategories();
+    this.indexQuestionCategories();
   },
 };
 </script>
