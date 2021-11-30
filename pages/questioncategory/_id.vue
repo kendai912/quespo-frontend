@@ -1,25 +1,21 @@
 <template>
   <v-card class="mx-auto" max-width="440" flat>
     <v-window v-model="quiz">
-      <v-window-item
-        v-for="(question, i) in questionCategory.questions"
-        :key="`question-${i}`"
-      >
+      <v-window-item v-for="(question, i) in questions" :key="`question-${i}`">
         <v-list-item two-line>
           <v-list-item-content>
             <v-list-item-title class="text-h6 text-center">
               {{ questionCategory.title }}
             </v-list-item-title>
             <v-list-item-subtitle class="text-center"
-              >{{ i + 1 }} /
-              {{ questionCategory.questions.length }} 問目</v-list-item-subtitle
+              >{{ i + 1 }} / {{ questions.length }} 問目</v-list-item-subtitle
             >
           </v-list-item-content>
         </v-list-item>
 
         <v-card-text class="pa-0">
           <v-img
-            :src="question.img_file_name_question"
+            :src="question_src(question.id)"
             width="100%"
             class="mx-auto"
             contain
@@ -32,7 +28,7 @@
 
         <v-card-actions class="d-flex justify-center">
           <v-container>
-            <Hint :hintText="question.hint_text" />
+            <Hint :hintText="question.hint.hint_text" />
             <v-row class="d-flex justify-center mt-12 mb-4 position-relative">
               <v-btn
                 @click="answer(0)"
@@ -45,10 +41,10 @@
               <div
                 v-if="
                   question.options[0].outcome &&
-                  (question.status == 2 ||
-                    question.status == 3 ||
-                    result == 2 ||
-                    result == 3 ||
+                  (question.status == 'false_2' ||
+                    question.status == 'true' ||
+                    result == 'false_2' ||
+                    result == 'true' ||
                     answeredOption == 0)
                 "
                 class="maru"
@@ -56,10 +52,10 @@
               <div
                 v-if="
                   !question.options[0].outcome &&
-                  (question.status == 2 ||
-                    question.status == 3 ||
-                    result == 2 ||
-                    result == 3 ||
+                  (question.status == 'false_2' ||
+                    question.status == 'true' ||
+                    result == 'false_2' ||
+                    result == 'true' ||
                     answeredOption == 0)
                 "
                 class="batsu"
@@ -77,10 +73,10 @@
               <div
                 v-if="
                   question.options[1].outcome &&
-                  (question.status == 2 ||
-                    question.status == 3 ||
-                    result == 2 ||
-                    result == 3 ||
+                  (question.status == 'false_2' ||
+                    question.status == 'true' ||
+                    result == 'false_2' ||
+                    result == 'true' ||
                     answeredOption == 1)
                 "
                 class="maru"
@@ -88,10 +84,10 @@
               <div
                 v-if="
                   !question.options[1].outcome &&
-                  (question.status == 2 ||
-                    question.status == 3 ||
-                    result == 2 ||
-                    result == 3 ||
+                  (question.status == 'false_2' ||
+                    question.status == 'true' ||
+                    result == 'false_2' ||
+                    result == 'true' ||
                     answeredOption == 1)
                 "
                 class="batsu"
@@ -109,10 +105,10 @@
               <div
                 v-if="
                   question.options[2].outcome &&
-                  (question.status == 2 ||
-                    question.status == 3 ||
-                    result == 2 ||
-                    result == 3 ||
+                  (question.status == 'false_2' ||
+                    question.status == 'true' ||
+                    result == 'false_2' ||
+                    result == 'true' ||
                     answeredOption == 2)
                 "
                 class="maru"
@@ -120,10 +116,10 @@
               <div
                 v-if="
                   !question.options[2].outcome &&
-                  (question.status == 2 ||
-                    question.status == 3 ||
-                    result == 2 ||
-                    result == 3 ||
+                  (question.status == 'false_2' ||
+                    question.status == 'true' ||
+                    result == 'false_2' ||
+                    result == 'true' ||
                     answeredOption == 2)
                 "
                 class="batsu"
@@ -133,14 +129,16 @@
         </v-card-actions>
 
         <v-card
-          v-if="question.status == 2 || question.status == 3 || result"
+          v-if="
+            question.status == 'false_2' || question.status == 'true' || result
+          "
           class="mx-auto text-center"
           max-width="440"
           outlined
           rounded
         >
           <v-img
-            v-if="question.status == 3 || result == 3"
+            v-if="question.status == 'true' || result == 'true'"
             :src="correct_src"
             width="60%"
             class="mx-auto"
@@ -156,10 +154,10 @@
 
           <div
             v-if="
-              question.status == 2 ||
-              question.status == 3 ||
-              result == 2 ||
-              result == 3
+              question.status == 'false_2' ||
+              question.status == 'true' ||
+              result == 'false_2' ||
+              result == 'true'
             "
             class="text-h7 text-center px-4 pt-0 pb-0 mb-4"
           >
@@ -170,7 +168,7 @@
           </div>
 
           <v-card-actions
-            v-if="result == 1"
+            v-if="result == 'false_1'"
             class="d-flex justify-center mt-4 mb-8"
           >
             <v-container>
@@ -187,7 +185,7 @@
       <v-btn @click="prev"> 戻る </v-btn>
       <v-item-group v-model="quiz" class="text-center" mandatory>
         <v-item
-          v-for="i in questionCategory.questions.length"
+          v-for="(question, i) in questions"
           :key="`btn-${i}`"
           v-slot="{ active, toggle }"
         >
@@ -196,10 +194,7 @@
           </v-btn>
         </v-item>
       </v-item-group>
-      <v-btn
-        :disabled="quiz + 1 === questionCategory.questions.length"
-        @click="next"
-      >
+      <v-btn :disabled="quiz + 1 === questions.length" @click="next">
         次へ
       </v-btn>
     </v-card-actions>
@@ -216,130 +211,55 @@ export default {
       correct_src: require("@/assets/image/correct.png"),
       wrong_src: require("@/assets/image/wrong.png"),
       answeredOption: null,
-      result: null,
-      questionCategory: {
-        question_category_id: 1,
-        title: "鎌倉大仏",
-        body: "鎌倉大仏として名高い高尊寺の国宝銅像阿弥陀仏像に関するクイズ",
-        num_of_questions: 3,
-        address: "https://www.google.com/maps/dir/?api=1&destination=鎌倉大仏",
-        img_file_name_question_category:
-          "https://cdn.vuetifyjs.com/images/cards/foster.jpg",
-        questions: [
-          {
-            question_id: 1,
-            question_text: "鎌倉大仏はなぜ建てられたのか？",
-            img_file_name_question:
-              "https://cdn.vuetifyjs.com/images/cards/foster.jpg",
-            hint_text: "クイズ１のヒントの文言",
-            commentary:
-              "鎌倉大仏が建立された頃、付近には死後に出会う十王を奉る閻魔堂があり、浄土信仰に基づく情景を構成する寺院群の一つとして建てられた",
-            status: null,
-            created_at: "2021/11/24",
-            options: [
-              {
-                option_id: 1,
-                outcome: true,
-                option_text: "死者の怨霊を鎮めるため",
-              },
-              {
-                option_id: 2,
-                outcome: false,
-                option_text: "観光名所にするため",
-              },
-              {
-                option_id: 3,
-                outcome: false,
-                option_text: "天然痘の被害が静まるように祈るため",
-              },
-            ],
-          },
-          {
-            question_id: 2,
-            question_text: "鶴岡八幡宮の質問文",
-            img_file_name_question:
-              "https://cdn.vuetifyjs.com/images/cards/halcyon.png",
-            hint_text: "クイズ２のヒントの文言",
-            commentary: "鶴岡八幡宮の解説",
-            status: 2,
-            created_at: "2021/11/23",
-            options: [
-              {
-                option_id: 1,
-                outcome: false,
-                option_text: "不正解の選択肢",
-              },
-              {
-                option_id: 2,
-                outcome: true,
-                option_text: "正解の選択肢",
-              },
-              {
-                option_id: 3,
-                outcome: false,
-                option_text: "不正解の選択肢",
-              },
-            ],
-          },
-          {
-            question_id: 3,
-            question_text: "問３の質問文",
-            img_file_name_question:
-              "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-            hint_text: "クイズ３のヒントの文言",
-            commentary: "問３の解説",
-            status: 1,
-            created_at: "2021/11/30",
-            options: [
-              {
-                option_id: 1,
-                outcome: false,
-                option_text: "不正解の選択肢",
-              },
-              {
-                option_id: 2,
-                outcome: false,
-                option_text: "不正解の選択肢",
-              },
-              {
-                option_id: 3,
-                outcome: true,
-                option_text: "正解の選択肢",
-              },
-            ],
-          },
-        ],
-      },
     };
   },
+  computed: {
+    ...mapGetters({
+      questionCategory: "questioncategory/questionCategory",
+      questions: "questioncategory/questions",
+      result: "question/result",
+    }),
+    question_src: function () {
+      return function (questionId) {
+        return require("@/assets/image/question/question_" +
+          questionId +
+          ".jpg");
+      };
+    },
+  },
   methods: {
+    ...mapMutations({
+      clearResult: "question/clearResult",
+    }),
+    ...mapActions({
+      showQuestionCategory: "questioncategory/showQuestionCategory",
+      getResult: "question/getResult",
+    }),
     next() {
-      this.quiz =
-        this.quiz + 1 === this.questionCategory.questions.length
-          ? 0
-          : this.quiz + 1;
+      this.quiz = this.quiz + 1 === this.questions.length ? 0 : this.quiz + 1;
     },
     prev() {
       this.quiz = this.quiz - 1 < 0 ? this.$router.push("/top") : this.quiz - 1;
     },
-    answer(optionId) {
-      this.clearResult();
+    async answer(optionId) {
+      this.clear();
+      await this.getResult(optionId);
 
       this.answeredOption = optionId;
-      this.questionCategory.questions[0].status = null; // 更新されたstatusが返ってくる
-      this.result = 1; // 更新されたstatusが返ってくる
+      this.questions[optionId].status = this.result;
     },
     retry() {
-      this.questionCategory.questions[0].status = this.result;
-      this.clearResult();
+      this.questions[optionId].status = this.result;
+      this.clear();
     },
-    clearResult() {
+    clear() {
       this.answeredOption = null;
-      this.result = null;
+      this.clearResult();
     },
   },
   created() {
-    this.answer(1); // あとで消す
+    let questionCategoryId = this.$route.params.id;
+    this.showQuestionCategory(questionCategoryId);
   },
 };
 </script>

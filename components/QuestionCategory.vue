@@ -74,7 +74,9 @@ export default {
     question_category_src: function () {
       return function (i) {
         let index = Number(i) + 1;
-        return require("@/assets/image/question_category_" + index + ".jpg");
+        return require("@/assets/image/questioncategory/question_category_" +
+          index +
+          ".jpg");
       };
     },
   },
