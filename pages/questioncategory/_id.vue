@@ -5,7 +5,7 @@
         <v-list-item two-line>
           <v-list-item-content>
             <v-list-item-title class="text-h6 text-center">
-              {{ questionCategory.title }}
+              {{ questionCategory[0].title }}
             </v-list-item-title>
             <v-list-item-subtitle class="text-center"
               >{{ i + 1 }} / {{ questions.length }} 問目</v-list-item-subtitle
@@ -203,6 +203,7 @@
 
 <script>
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
+import Mixin from "@/plugins/mixin.js";
 
 export default {
   data() {
@@ -218,6 +219,7 @@ export default {
       questionCategory: "questioncategory/questionCategory",
       questions: "questioncategory/questions",
       result: "question/result",
+      locationTimer: "location/locationTimer",
     }),
     question_src: function () {
       return function (questionId) {
@@ -227,9 +229,11 @@ export default {
       };
     },
   },
+  mixins: [Mixin],
   methods: {
     ...mapMutations({
       clearResult: "question/clearResult",
+      setLocationTimer: "location/setLocationTimer",
     }),
     ...mapActions({
       showQuestionCategory: "questioncategory/showQuestionCategory",
@@ -242,11 +246,31 @@ export default {
       this.quiz = this.quiz - 1 < 0 ? this.$router.push("/top") : this.quiz - 1;
     },
     async answer(optionId) {
-      this.clear();
-      await this.getResult(optionId);
+      if (
+        this.validateLocation(
+          this.questionCategory[0].question_area.latitude,
+          this.questionCategory[0].question_area.longitude
+        )
+      ) {
+        this.clear();
+        await this.getResult(optionId);
 
-      this.answeredOption = optionId;
-      this.questions[optionId].status = this.result;
+        this.answeredOption = optionId;
+        this.questions[optionId].status = this.result;
+      } else {
+        this.getCurrentPosition();
+
+        alert(
+          "クイズに回答するには位置情報の利用を許可し、スポットの100m以内に近づいてください\n(位置情報の取得に時間がかかることがあります)"
+        );
+
+        let self = this;
+        clearInterval(this.locationTimer);
+        let timer = setInterval(() => {
+          self.getCurrentPosition();
+        }, 60000);
+        this.setLocationTimer(timer);
+      }
     },
     retry() {
       this.questions[optionId].status = this.result;
@@ -257,9 +281,9 @@ export default {
       this.clearResult();
     },
   },
-  created() {
+  async created() {
     let questionCategoryId = this.$route.params.id;
-    this.showQuestionCategory(questionCategoryId);
+    await this.showQuestionCategory(questionCategoryId);
   },
 };
 </script>

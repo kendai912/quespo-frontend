@@ -54,7 +54,6 @@ const actions = {
     if (response.status == OK) {
       context.commit("setQuestionCategory", response.data.questionCategory);
       context.commit("setQuestions", response.data.questions);
-      console.log(response.data.questions);
     } else if (response.status === UNPROCESSABLE_ENTITY) {
       console.log("UNPROCESSABLE_ENTITY");
     } else {
