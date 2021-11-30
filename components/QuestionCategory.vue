@@ -8,6 +8,13 @@
           cols="12"
         >
           <v-card max-height="180">
+            <v-img
+              v-if="questionCategory.complete_flag"
+              :src="complete_src"
+              width="60%"
+              class="complete"
+              contain
+            ></v-img>
             <div class="d-flex flex-no-wrap justify-space-between align-center">
               <div>
                 <v-card-title
@@ -65,7 +72,9 @@ import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 
 export default {
   data() {
-    return {};
+    return {
+      complete_src: require("@/assets/image/complete.png"),
+    };
   },
   computed: {
     ...mapGetters({
@@ -90,6 +99,9 @@ export default {
         "_blank"
       );
     },
+  },
+  mounted() {
+    console.log(this.questionCategories);
   },
 };
 </script>
