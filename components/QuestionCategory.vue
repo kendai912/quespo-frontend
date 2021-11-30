@@ -7,7 +7,7 @@
           :key="i"
           cols="12"
         >
-          <v-card max-height="180">
+          <v-card>
             <v-img
               v-if="questionCategory.complete_flag"
               :src="complete_src"
@@ -100,8 +100,6 @@ export default {
       );
     },
   },
-  mounted() {
-    console.log(this.questionCategories);
-  },
+  mounted() {},
 };
 </script>
