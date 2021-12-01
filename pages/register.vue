@@ -128,16 +128,19 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      isLoggedIn: "auth/isLoggedIn",
+    }),
   },
   methods: {
     ...mapActions({
-      isLoggedIn: "auth/isLoggedIn",
+      registerAuth: "auth/registerAuth",
     }),
     async register() {
       if (this.$refs.form.validate()) {
         try {
           // authストアのregisterアクションを呼び出す
-          await this.register(this.registerForm);
+          await this.registerAuth(this.registerForm);
 
           //ログイン出来たらTOPページへ
           if (this.isLoggedIn) {

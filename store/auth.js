@@ -40,6 +40,7 @@ const actions = {
       .catch((err) => err.response || err);
 
     if (response.status == CREATED) {
+      context.commit("setApiToken", response.data.token);
       context.commit("setIsLoggedIn");
     } else if (response.status === UNPROCESSABLE_ENTITY) {
       console.log("UNPROCESSABLE_ENTITY");
