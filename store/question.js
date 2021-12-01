@@ -35,7 +35,10 @@ const mutations = {
 const actions = {
   async showQuestion(context, question_id) {
     const response = await this.$axios
-      .get("/api/questions/" + question_id)
+      .get(
+        "https://frozen-woodland-06584.herokuapp.com/api/questions/" +
+          question_id
+      )
       .catch((err) => err.response || err);
 
     if (response.status == OK) {
@@ -53,7 +56,10 @@ const actions = {
     };
 
     const response = await this.$axios
-      .post("/api/question/answer", params)
+      .post(
+        "https://frozen-woodland-06584.herokuapp.com/api/question/answer",
+        params
+      )
       .catch((err) => err.response || err);
 
     if (response.status == CREATED) {
