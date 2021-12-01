@@ -48,7 +48,7 @@ export default {
   proxy: {
     "/api":
       environment === "development"
-        ? "http://localhost:80"
+        ? "https://frozen-woodland-06584.herokuapp.com"
         : "https://quespo.com",
   },
 
