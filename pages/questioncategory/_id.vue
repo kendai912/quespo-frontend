@@ -26,16 +26,20 @@
           {{ question.question_text }}
         </div>
 
-        <v-card-actions class="d-flex justify-center">
+        <v-card-actions v-show="ready" class="d-flex justify-center">
           <v-container>
             <Hint :hintText="question.hint.hint_text" />
             <v-row class="d-flex justify-center mt-12 mb-4 position-relative">
               <v-btn
-                @click="answer(0)"
+                @click="answer(question.id, question.options[0].option_id, i)"
                 color="primary"
                 height="40"
                 width="80%"
-                :disabled="result !== null"
+                :disabled="
+                  question.result !== null ||
+                  question.status == 'false_2' ||
+                  question.status == 'true'
+                "
                 >{{ question.options[0].option_text }}</v-btn
               >
               <div
@@ -43,8 +47,8 @@
                   question.options[0].outcome &&
                   (question.status == 'false_2' ||
                     question.status == 'true' ||
-                    result == 'false_2' ||
-                    result == 'true' ||
+                    question.result == 'false_2' ||
+                    question.result == 'true' ||
                     answeredOption == 0)
                 "
                 class="maru"
@@ -54,8 +58,8 @@
                   !question.options[0].outcome &&
                   (question.status == 'false_2' ||
                     question.status == 'true' ||
-                    result == 'false_2' ||
-                    result == 'true' ||
+                    question.result == 'false_2' ||
+                    question.result == 'true' ||
                     answeredOption == 0)
                 "
                 class="batsu"
@@ -63,11 +67,15 @@
             </v-row>
             <v-row class="d-flex justify-center my-4 position-relative">
               <v-btn
-                @click="answer(1)"
+                @click="answer(question.id, question.options[1].option_id, i)"
                 color="primary"
                 height="40"
                 width="80%"
-                :disabled="result !== null"
+                :disabled="
+                  question.result !== null ||
+                  question.status == 'false_2' ||
+                  question.status == 'true'
+                "
                 >{{ question.options[1].option_text }}</v-btn
               >
               <div
@@ -75,8 +83,8 @@
                   question.options[1].outcome &&
                   (question.status == 'false_2' ||
                     question.status == 'true' ||
-                    result == 'false_2' ||
-                    result == 'true' ||
+                    question.result == 'false_2' ||
+                    question.result == 'true' ||
                     answeredOption == 1)
                 "
                 class="maru"
@@ -86,8 +94,8 @@
                   !question.options[1].outcome &&
                   (question.status == 'false_2' ||
                     question.status == 'true' ||
-                    result == 'false_2' ||
-                    result == 'true' ||
+                    question.result == 'false_2' ||
+                    question.result == 'true' ||
                     answeredOption == 1)
                 "
                 class="batsu"
@@ -95,11 +103,15 @@
             </v-row>
             <v-row class="d-flex justify-center my-4 position-relative">
               <v-btn
-                @click="answer(2)"
+                @click="answer(question.id, question.options[2].option_id, i)"
                 color="primary"
                 height="40"
                 width="80%"
-                :disabled="result !== null"
+                :disabled="
+                  question.result !== null ||
+                  question.status == 'false_2' ||
+                  question.status == 'true'
+                "
                 >{{ question.options[2].option_text }}</v-btn
               >
               <div
@@ -107,8 +119,8 @@
                   question.options[2].outcome &&
                   (question.status == 'false_2' ||
                     question.status == 'true' ||
-                    result == 'false_2' ||
-                    result == 'true' ||
+                    question.result == 'false_2' ||
+                    question.result == 'true' ||
                     answeredOption == 2)
                 "
                 class="maru"
@@ -118,8 +130,8 @@
                   !question.options[2].outcome &&
                   (question.status == 'false_2' ||
                     question.status == 'true' ||
-                    result == 'false_2' ||
-                    result == 'true' ||
+                    question.result == 'false_2' ||
+                    question.result == 'true' ||
                     answeredOption == 2)
                 "
                 class="batsu"
@@ -130,7 +142,9 @@
 
         <v-card
           v-if="
-            question.status == 'false_2' || question.status == 'true' || result
+            question.status == 'false_2' ||
+            question.status == 'true' ||
+            question.result
           "
           class="mx-auto text-center"
           max-width="440"
@@ -138,7 +152,7 @@
           rounded
         >
           <v-img
-            v-if="question.status == 'true' || result == 'true'"
+            v-if="question.status == 'true' || question.result == 'true'"
             :src="correct_src"
             width="60%"
             class="mx-auto"
@@ -156,8 +170,8 @@
             v-if="
               question.status == 'false_2' ||
               question.status == 'true' ||
-              result == 'false_2' ||
-              result == 'true'
+              question.result == 'false_2' ||
+              question.result == 'true'
             "
             class="text-h7 text-center px-4 pt-0 pb-0 mb-4"
           >
@@ -168,12 +182,12 @@
           </div>
 
           <v-card-actions
-            v-if="result == 'false_1'"
+            v-if="question.result == 'false_1'"
             class="d-flex justify-center mt-4 mb-8"
           >
             <v-container>
               <v-row class="d-flex justify-center">
-                <v-btn @click="retry" color="error"> 再挑戦する </v-btn>
+                <v-btn @click="retry(i)" color="error"> 再挑戦する </v-btn>
               </v-row>
             </v-container>
           </v-card-actions>
@@ -212,12 +226,15 @@ export default {
       correct_src: require("@/assets/image/correct.png"),
       wrong_src: require("@/assets/image/wrong.png"),
       answeredOption: null,
+      questions: [],
+      ready: false,
     };
   },
   computed: {
     ...mapGetters({
       questionCategory: "questioncategory/questionCategory",
-      questions: "questioncategory/questions",
+      // questions: "questioncategory/questions",
+      status: "question/status",
       result: "question/result",
       locationTimer: "location/locationTimer",
     }),
@@ -237,6 +254,7 @@ export default {
     }),
     ...mapActions({
       showQuestionCategory: "questioncategory/showQuestionCategory",
+      showQuestion: "question/showQuestion",
       getResult: "question/getResult",
     }),
     next() {
@@ -245,7 +263,7 @@ export default {
     prev() {
       this.quiz = this.quiz - 1 < 0 ? this.$router.push("/top") : this.quiz - 1;
     },
-    async answer(optionId) {
+    async answer(question_id, option_id, i) {
       if (
         this.validateLocation(
           this.questionCategory[0].question_area.latitude,
@@ -253,10 +271,14 @@ export default {
         )
       ) {
         this.clear();
-        await this.getResult(optionId);
+        await this.getResult({
+          option_id: option_id,
+          question_id: question_id,
+        });
 
-        this.answeredOption = optionId;
-        this.questions[optionId].status = this.result;
+        this.answeredOption = option_id;
+        this.questions[i].result = this.result;
+        this.questions[i].status = this.result;
       } else {
         this.getCurrentPosition();
 
@@ -272,8 +294,9 @@ export default {
         this.setLocationTimer(timer);
       }
     },
-    retry() {
-      this.questions[optionId].status = this.result;
+    retry(i) {
+      this.questions[i].status = this.result;
+      this.questions[i].result = null;
       this.clear();
     },
     clear() {
@@ -284,6 +307,22 @@ export default {
   async created() {
     let questionCategoryId = this.$route.params.id;
     await this.showQuestionCategory(questionCategoryId);
+
+    this.questions = JSON.parse(
+      JSON.stringify(this.$store.getters["questioncategory/questions"])
+    ); // 値渡し
+
+    let self = this;
+    this.questions.forEach(async (question, index) => {
+      await self.showQuestion(question.id);
+      self.$set(question, "status", self.status);
+      self.$set(question, "result", null);
+
+      if (index + 1 == self.questions.length) self.ready = true;
+    });
+  },
+  beforeDestroy() {
+    this.ready = false;
   },
 };
 </script>
