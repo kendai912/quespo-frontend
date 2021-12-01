@@ -3,6 +3,7 @@ export default async ({ store, route, redirect }) => {
   if (
     route.name === "index" ||
     route.name == "login" ||
+    route.name === "register" ||
     store.getters["auth/isLoggedIn"]
   ) {
     return false;
