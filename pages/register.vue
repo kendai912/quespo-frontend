@@ -144,7 +144,7 @@ export default {
 
           //ログイン出来たらTOPページへ
           if (this.isLoggedIn) {
-            this.$router.push("/top");
+            this.$router.push("top");
           } else {
             //登録済みのアカウントであることを表示
             this.registerError = true;
