@@ -48,8 +48,8 @@ export default {
   proxy: {
     "/api":
       environment === "development"
-        ? "https://frozen-woodland-06584.herokuapp.com"
-        : "https://frozen-woodland-06584.herokuapp.com",
+        ? "http://localhost:80"
+        : "https://quespo-backend.herokuapp.com/",
   },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
