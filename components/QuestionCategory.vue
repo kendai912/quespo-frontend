@@ -100,6 +100,8 @@ export default {
       );
     },
   },
-  mounted() {},
+  created() {
+    console.log(this.questionCategories);
+  },
 };
 </script>
