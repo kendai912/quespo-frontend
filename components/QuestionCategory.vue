@@ -101,7 +101,9 @@ export default {
     },
   },
   created() {
-    console.log(this.questionCategories);
+    this.$nextTick(function () {
+      console.log(this.questionCategories);
+    });
   },
 };
 </script>
