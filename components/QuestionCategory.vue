@@ -100,9 +100,9 @@ export default {
       );
     },
   },
-  created() {
+  mounted() {
     this.$nextTick(function () {
-      console.log(this.questionCategories);
+      setTimeout(console.log(this.questionCategories), 1000);
     });
   },
 };
