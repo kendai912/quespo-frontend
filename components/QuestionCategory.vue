@@ -100,10 +100,5 @@ export default {
       );
     },
   },
-  mounted() {
-    this.$nextTick(function () {
-      setTimeout(console.log(this.questionCategories), 1000);
-    });
-  },
 };
 </script>
