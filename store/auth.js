@@ -36,7 +36,7 @@ const mutations = {
 const actions = {
   async registerAuth(context, data) {
     const response = await this.$axios
-      .post("https://frozen-woodland-06584.herokuapp.com/api/register", data)
+      .post("/api/register", data)
       .catch((err) => err.response || err);
 
     if (response.status == CREATED) {
@@ -50,7 +50,7 @@ const actions = {
   },
   async loginAuth(context, data) {
     const response = await this.$axios
-      .post("https://frozen-woodland-06584.herokuapp.com/api/login", data)
+      .post("/api/login", data)
       .catch((err) => err.response || err);
 
     if (response.status == OK) {
@@ -64,7 +64,7 @@ const actions = {
   },
   async logoutAuth(context) {
     const response = await this.$axios
-      .post("https://frozen-woodland-06584.herokuapp.com/api/logout")
+      .post("/api/logout")
       .catch((err) => err.response || err);
     context.commit("removeApiToken");
     context.commit("setIsLoggedOut");

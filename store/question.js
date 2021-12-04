@@ -36,7 +36,7 @@ const actions = {
   async showQuestion(context, question_id) {
     const response = await this.$axios
       .get(
-        "https://frozen-woodland-06584.herokuapp.com/api/questions/" +
+        "/api/questions/" +
           question_id
       )
       .catch((err) => err.response || err);
@@ -57,7 +57,7 @@ const actions = {
 
     const response = await this.$axios
       .post(
-        "https://frozen-woodland-06584.herokuapp.com/api/question/answer",
+        "/api/question/answer",
         params
       )
       .catch((err) => err.response || err);

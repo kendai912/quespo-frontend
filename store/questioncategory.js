@@ -34,7 +34,7 @@ const mutations = {
 const actions = {
   async indexQuestionCategories(context) {
     const response = await this.$axios
-      .get("https://frozen-woodland-06584.herokuapp.com/api/questioncategories")
+      .get("/api/questioncategories")
       .catch((err) => err.response || err);
 
     if (response.status == OK) {
@@ -48,10 +48,7 @@ const actions = {
 
   async showQuestionCategory(context, questionCategoryId) {
     const response = await this.$axios
-      .get(
-        "https://frozen-woodland-06584.herokuapp.com/api/questioncategories/" +
-          questionCategoryId
-      )
+      .get("/api/questioncategories/" + questionCategoryId)
       .catch((err) => err.response || err);
 
     if (response.status == OK) {
