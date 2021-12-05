@@ -243,7 +243,7 @@ export default {
 
         // Heroku用のid変換
         if (process.env.NODE_ENV !== "development") {
-          questionId = (id % 10) + 1;
+          questionId = Math.floor(id / 10) + 1;
         } else {
           questionId = id;
         }
