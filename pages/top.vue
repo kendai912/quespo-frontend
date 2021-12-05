@@ -16,7 +16,6 @@ export default {
     ...mapGetters({
       latitude: "location/latitude",
       longitude: "location/longitude",
-      questionCategories: "questioncategory/questionCategories", // temp
     }),
   },
   mixins: [Mixin],
@@ -30,10 +29,6 @@ export default {
   },
   async created() {
     await this.indexQuestionCategories();
-
-    this.$nextTick(function () {
-      setTimeout(console.log(this.questionCategories), 1000);
-    });
 
     let self = this;
     this.getCurrentPosition();

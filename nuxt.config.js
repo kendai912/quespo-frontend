@@ -49,7 +49,7 @@ export default {
     "/api":
       environment === "development"
         ? "http://localhost:80"
-        : "https://quespo-backend.herokuapp.com/",
+        : "https://quespo-backend.herokuapp.com",
   },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios

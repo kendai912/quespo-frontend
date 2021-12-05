@@ -233,13 +233,21 @@ export default {
   computed: {
     ...mapGetters({
       questionCategory: "questioncategory/questionCategory",
-      // questions: "questioncategory/questions",
       status: "question/status",
       result: "question/result",
       locationTimer: "location/locationTimer",
     }),
     question_src: function () {
-      return function (questionId) {
+      return function (id) {
+        let questionId;
+
+        // Heroku用のid変換
+        if (process.env.NODE_ENV !== "development") {
+          questionId = (id % 10) + 1;
+        } else {
+          questionId = id;
+        }
+
         return require("@/assets/image/question/question_" +
           questionId +
           ".jpg");
