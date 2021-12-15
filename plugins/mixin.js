@@ -72,11 +72,11 @@ export default {
       );
 
       // 300m以内で回答可能
-      // if (distance <= 300) {
+      if (distance <= 300) {
         return true;
-      // } else {
-      //   return false;
-      // }
+      } else {
+        return false;
+      }
     },
   },
 };
