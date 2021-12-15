@@ -208,8 +208,9 @@
           </v-btn>
         </v-item>
       </v-item-group>
-      <v-btn :disabled="quiz + 1 === questions.length" @click="next">
-        次へ
+      <v-btn @click="next">
+        <span v-if="quiz + 1 !== questions.length">次へ</span
+        ><span v-else>TOPへ</span>
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -266,7 +267,10 @@ export default {
       getResult: "question/getResult",
     }),
     next() {
-      this.quiz = this.quiz + 1 === this.questions.length ? 0 : this.quiz + 1;
+      this.quiz =
+        this.quiz + 1 === this.questions.length
+          ? this.$router.push("/top")
+          : this.quiz + 1;
     },
     prev() {
       this.quiz = this.quiz - 1 < 0 ? this.$router.push("/top") : this.quiz - 1;
