@@ -34,7 +34,7 @@
                 @click="answer(question.id, question.options[0].option_id, i)"
                 color="primary"
                 height="40"
-                width="80%"
+                width="90%"
                 :disabled="
                   question.result !== null ||
                   question.status == 'false_2' ||
@@ -70,7 +70,7 @@
                 @click="answer(question.id, question.options[1].option_id, i)"
                 color="primary"
                 height="40"
-                width="80%"
+                width="90%"
                 :disabled="
                   question.result !== null ||
                   question.status == 'false_2' ||
@@ -106,7 +106,7 @@
                 @click="answer(question.id, question.options[2].option_id, i)"
                 color="primary"
                 height="40"
-                width="80%"
+                width="90%"
                 :disabled="
                   question.result !== null ||
                   question.status == 'false_2' ||
