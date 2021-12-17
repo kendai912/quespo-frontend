@@ -122,7 +122,7 @@ export default {
       passwordRules: {
         required: (value) => !!value || "パスワードは必須です",
         regex: (value) =>
-          /^(?=.*?[a-zA-Z])(?=.*?\d)[a-zA-Z\d]{7,128}$/.test(value) ||
+          /^(?=.*?[a-zA-Z])(?=.*?\d)[a-zA-Z\d]{6,128}$/.test(value) ||
           "半角英字数字をそれぞれ1種類以上含む6文字以上128文字以下で入力してください",
       },
     };
